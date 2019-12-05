@@ -1,0 +1,4 @@
+description: Asset ID of the in-car MDI device, also know as IMEI
+type: string
+length: 15
+example: 351620003876050

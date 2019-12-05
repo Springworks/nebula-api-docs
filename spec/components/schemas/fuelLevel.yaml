@@ -1,0 +1,3 @@
+description: Volume of vehicle's fuel tank in litres
+type: double
+example: 52.0

@@ -1,19 +1,12 @@
-# This is an **example** API to demonstrate features of OpenAPI specification.
-# It doesn't cover all OpenAPI features. For more full example check out: https://github.com/APIs-guru/petstore_extended
-
+#  For more full example check out: https://github.com/APIs-guru/petstore_extended
 openapi: 3.0.0
 info:
-  version: '1.0.0' # Your API version
-  # It can be any string but it is better to use semantic versioning: http://semver.org/
-  # Warning: OpenAPI require version to be string, but without quotation YAML can recognize it as number.
-  
-  title: autoSense B2B Gateway # Replace with your API title
-  # Keep it simple. Don't add "API" or version at the end of the string.
-
-  termsOfService: 'https://autosense.ch/en/terms-of-use/' # [Optional] Replace with an URL to your ToS
+  version: '1.0.0'
+  title: autoSense B2B API Gateway
+  termsOfService: 'https://autosense.ch/en/terms-of-use/'
   contact:
-    email: edmond@autosense.ch # [Optional] Replace with your contact email
-    url: 'https://autosense.ch' # [Optional] Replace with link to your contact form
+    email: edmond@autosense.ch
+    url: 'https://autosense.ch'
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
@@ -22,7 +15,8 @@ info:
   
   # Describe your API here, you can use GFM (https://guides.github.com/features/mastering-markdown) here
   description: |
-    This service is proxy for core services allowing external partners to access autoSense data. Every integration of B2B customer using our standard models must be done over this endpoint.
+    This service is proxy for core services allowing external partners to access autoSense data. \
+    Every integration of B2B customer using our standard models must is done over this endpoint.
    
 # A list of tags used by the specification with additional metadata.
 # The order of the tags can be used to reflect on their order by the parsing tools.
@@ -31,162 +25,9 @@ tags:
     description: Get current and historical fuel information for an IMEI.
   - name: Mileage
     description: Get current and historical mileage information for an IMEI.
+  - name: PlugUnplug
+    description: |
+      Retrieve actual or historical information whether the MDI device is connected to the car's OBD port. \ 
+      A new record is created each time the status of the devices changes from `plugged` or `unplugged`.
 servers:
   - url: 'https://nebula.service.autosense.ch/api/v1'
-
-
-
-# Holds the relative paths to the individual endpoints. The path is appended to the
-# basePath in order to construct the full URL. 
-paths:
-  '/asset/{asset_id}/fuel': # path parameter in curly braces
-
-    # parameters list that are used with each operation for this path
-    parameters:
-      - name: asset_id
-        in: query
-        description: Asset ID of the MDI device, also known as IMEI
-        schema:
-          type: string
-
-    get: # documentation for GET operation for this path
-      tags:
-        - Fuel
-      
-      # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get current fuel information
-      
-      # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
-      description: |
-        Always returns the latest recorded fuel information for a given IMEI.
-      
-      # operationId should be unique across the whole specification
-      operationId: getFuel
-      
-      # security schemas applied to this operation
-      security:
-        - basic_auth: []
-      responses: # list of responses
-        '200':
-          description: Success
-          content:
-            application/json: # operation response mime type
-              schema: # response schema can be specified for each response
-                $ref: '#/components/schemas/Fuel'
-              example: # response example
-                messageId: mdi-1313382935323227381
-                asset: '3516220738006655'
-                recordedAt": "2019-12-04T05:54:51Z"
-                fuelLitres": 14.1
-                fuelLevel": 52
-        '401':
-          description: Asset not whitelisted | Unauthorized
-
-
-  '/asset/{asset_id}/fuel/history': # path parameter in curly braces
-
-    # parameters list that are used with each operation for this path
-    parameters:
-      - name: asset_id
-        in: query
-        description: Asset ID of the MDI device, also known as IMEI
-        schema:
-          type: string
-
-    get: # documentation for GET operation for this path
-      tags:
-        - Fuel
-      
-      # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get historical fuel information
-      
-      # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
-      description: |
-        Returns the array of all fuel records between two given time period.
-      
-      # operationId should be unique across the whole specification
-      operationId: getFuelHistory
-      
-      # security schemas applied to this operation
-      security:
-        - basic_auth: []
-      responses: # list of responses
-        '200':
-          description: Success
-          content:
-            application/json: # operation response mime type
-              schema: # response schema can be specified for each response
-                $ref: '#/components/schemas/FuelArray'
-              example: # response example
-                - messageId: mdi-1313382935323227381
-                  asset: '3516220738006655'
-                  recordedAt": "2019-12-04T05:54:51Z"
-                  fuelLitres": 14.1
-                  fuelLevel": 52
-                - messageId: mdi-1313382935323227382
-                  asset: '3516220738006655'
-                  recordedAt": "2019-12-04T05:55:51Z"
-                  fuelLitres": 13.9
-                  fuelLevel": 52
-                
-        '401':
-          description: Asset not whitelisted | Unauthorized
-
-
-        
-# An object to hold reusable parts that can be used across the spec
-components:
-  schemas:
-    messageId:
-      description: Globally unique ID of the message sent from the in-car device
-      type: string
-      length: 23
-      example: mdi-1313382935323211008
-    asset:
-      description: Asset ID of the in-car MDI device, also know as IMEI
-      type: string
-      length: 15
-      example: 351620003876050
-    recordedAt:
-      description: The time when the data was recorded on the in-car MDI device
-      type: string
-      length: 20
-      example: "2019-12-04T05:54:51Z"
-    fuelLitres:
-      description: Litres of fuel available in vehicle
-      type: double
-      example: 12.7
-    fuelLevel:
-      description: Volume of vehicle's fuel tank in litres
-      type: double
-      example: 52.0
-    Fuel:
-      type: object
-      properties:
-        messageId:
-          $ref: '#/components/schemas/messageId'
-        asset:
-          $ref: '#/components/schemas/asset'
-        recordedAt:
-          $ref: '#/components/schemas/recordedAt'
-        fuelLitres:
-          $ref: '#/components/schemas/fuelLitres'
-        fuelLevel:
-          $ref: '#/components/schemas/fuelLevel'
-    FuelArray:
-      type: array
-      items:
-        $ref: '#/components/schemas/Fuel'
-
-
-  headers:
-    ExpiresAfter:
-      description: date in UTC when token expires
-      schema:
-        type: string
-        format: date-time
-  # Security scheme definitions that can be used across the specification.
-  securitySchemes:
-    basic_auth: # security definition name (you can name it as you want)
-      type: http
-      scheme: basic

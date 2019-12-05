@@ -1,0 +1,8 @@
+name: assetId
+in: path
+description: Asset ID of the MDI device, also known as IMEI
+required: true
+schema:
+  type: string
+  maxLength: 15
+  minLength: 15

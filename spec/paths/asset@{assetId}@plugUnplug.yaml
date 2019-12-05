@@ -1,0 +1,29 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+
+get:
+  tags:
+    - PlugUnplug
+  summary: Get plugUnplug
+  description: |
+    Returns the latest recorded plug/unplug information for a given IMEI. \
+    The `event` field indicates whether the device is in the **plugged** or **unplugged** state, relative to the car's OBD port.
+  operationId: getPlugUnplug
+  security:
+    - basicAuth: []
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PlugUnplug"
+          example:
+            messageId: mdi-1313382935323227381
+            asset: "3516220738006655"
+            recordedAt": "2019-12-04T05:54:51Z"
+            event: "plugged"
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"

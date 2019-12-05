@@ -1,0 +1,5 @@
+type: string
+description: If the device is connected or not to the car's OBD port.
+enum:
+  - plugged
+  - unplugged

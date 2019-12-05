@@ -1,0 +1,18 @@
+description: Data for IMEI not found
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        timestamp:
+          type: ISO string
+          description: Time when the request was processed
+          example: "2019-12-05T15:17:18.542+0000"
+        message:
+          type: string
+          description: "Error message explanation"
+          example: "No message available"
+        details: 
+          type: string
+          description: The requested URI path
+          example: "uri=/api/v1/asset/YOUR_IMEI/..."

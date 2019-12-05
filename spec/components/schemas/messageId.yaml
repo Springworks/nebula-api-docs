@@ -1,0 +1,4 @@
+description: Globally unique ID of the message sent from the in-car device
+type: string
+length: 23
+example: mdi-1313382935323211008

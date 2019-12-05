@@ -1,0 +1,3 @@
+description: Mileage of the vehicle in km
+type: integer
+example: 12500

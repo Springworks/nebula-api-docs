@@ -1,0 +1,8 @@
+name: toDate
+in: query
+description: |
+  End date of the query range in ISO format. Must be within 48 hours of `fromDate`.
+example: "2019-11-16T08:00:00Z"
+required: true
+schema:
+  type: ISO string

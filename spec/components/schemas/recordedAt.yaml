@@ -1,0 +1,4 @@
+description: The time when the data was recorded on the in-car MDI device
+type: string
+length: 20
+example: "2019-12-04T05:54:51Z"

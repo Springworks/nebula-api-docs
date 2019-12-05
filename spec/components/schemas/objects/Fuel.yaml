@@ -1,0 +1,12 @@
+type: object
+properties:
+  messageId:
+    $ref: "#/components/schemas/messageId"
+  asset:
+    $ref: "#/components/schemas/asset"
+  recordedAt:
+    $ref: "#/components/schemas/recordedAt"
+  fuelLitres:
+    $ref: "#/components/schemas/fuelLitres"
+  fuelLevel:
+    $ref: "#/components/schemas/fuelLevel"

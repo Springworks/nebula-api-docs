@@ -1,0 +1,44 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+  - $ref: "#/components/parameters/fromDate"
+  - $ref: "#/components/parameters/toDate"
+
+get: # documentation for GET operation for this path
+  tags:
+    - Fuel
+
+  # summary is up to 120 symbold but we recommend to be shortest as possible
+  summary: Get fuel history
+
+  # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
+  description: |
+    Returns the array of all fuel records between two given time period.
+
+  # operationId should be unique across the whole specification
+  operationId: getFuelHistory
+
+  # security schemas applied to this operation
+  security:
+    - basicAuth: []
+  responses: # list of responses
+    "200":
+      description: Success
+      content:
+        application/json: # operation response mime type
+          schema: # response schema can be specified for each response
+            $ref: "#/components/schemas/FuelArray"
+          example: # response example
+            - messageId: mdi-1313382935323227381
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:54:51Z"
+              fuelLitres": 14.1
+              fuelLevel": 52
+            - messageId: mdi-1313382935323227382
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:55:51Z"
+              fuelLitres": 13.9
+              fuelLevel": 52
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"
