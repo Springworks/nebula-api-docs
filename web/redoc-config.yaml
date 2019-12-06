@@ -1,3 +1,4 @@
+showConsole: true
 theme:
   colors:
     primary:

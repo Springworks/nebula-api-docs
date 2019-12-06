@@ -2,7 +2,7 @@
 openapi: 3.0.0
 info:
   version: '1.0.0'
-  title: autoSense B2B API Gateway
+  title: autoSense Business API
   termsOfService: 'https://autosense.ch/en/terms-of-use/'
   contact:
     email: edmond@autosense.ch
@@ -15,8 +15,11 @@ info:
   
   # Describe your API here, you can use GFM (https://guides.github.com/features/mastering-markdown) here
   description: |
-    This service is proxy for core services allowing external partners to access autoSense data. \
-    Every integration of B2B customer using our standard models must is done over this endpoint.
+    **autoSense Business API** powers communication with your connected cars in a simple, secure and reliable way.
+    Get information about your vehicles in real time or query our database for historical data.
+    You can access fuel, mileage, plug/unplug information and more. 
+
+    Learn more about how to perform these requests below.
    
 # A list of tags used by the specification with additional metadata.
 # The order of the tags can be used to reflect on their order by the parsing tools.

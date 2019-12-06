@@ -10,7 +10,7 @@ get: # documentation for GET operation for this path
 
   # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
   description: |
-    Always returns the latest recorded fuel information for a given IMEI.
+    Returns the latest recorded fuel information for a given IMEI.
 
   # operationId should be unique across the whole specification
   operationId: getFuel

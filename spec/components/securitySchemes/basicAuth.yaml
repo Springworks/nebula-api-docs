@@ -1,5 +1,5 @@
 type: http
 scheme: basic
 description: |
-    Using the baisc authentication protocol you can generate your `auth_token` from *username* and *password*. \
-    Include this header in your requests: `Authorization: Basic <auth_token>`
+    Once you have a username and password from autoSense to access our Business API, generate a **basic authentication token** 
+    and include this in the Authorization header of your requests: `Authorization: Basic <auth_token>`
