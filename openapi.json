@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "version": "1.0.0",
-    "title": "autoSense B2B Gateway",
+    "title": "autoSense Business API",
     "termsOfService": "https://autosense.ch/en/terms-of-use/",
     "contact": {
       "email": "edmond@autosense.ch",
@@ -15,7 +15,7 @@
     "x-logo": {
       "url": "https://autosense.ch/wp-content/uploads/2018/09/autosense-logo.svg"
     },
-    "description": "This service is proxy for core services allowing external partners to access autoSense data. Every integration of B2B customer using our standard models must be done over this endpoint.\n"
+    "description": "**autoSense Business API** powers communication with your connected cars in a simple, secure and reliable way.\nGet information about your vehicles in real time or query our database for historical data.\nYou can access fuel, mileage, plug/unplug information and more. \n\nLearn more about how to perform these requests below.\n"
   },
   "tags": [
     {
@@ -25,6 +25,10 @@
     {
       "name": "Mileage",
       "description": "Get current and historical mileage information for an IMEI."
+    },
+    {
+      "name": "PlugUnplug",
+      "description": "Retrieve actual or historical information whether the MDI device is connected to the car's OBD port. \\ \nA new record is created each time the status of the devices changes from `plugged` or `unplugged`.\n"
     }
   ],
   "servers": [
@@ -33,27 +37,22 @@
     }
   ],
   "paths": {
-    "/asset/{asset_id}/fuel": {
+    "/asset/{assetId}/fuel": {
       "parameters": [
         {
-          "name": "asset_id",
-          "in": "query",
-          "description": "Asset ID of the MDI device, also known as IMEI",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/assetId"
         }
       ],
       "get": {
         "tags": [
           "Fuel"
         ],
-        "summary": "Get current fuel information",
-        "description": "Always returns the latest recorded fuel information for a given IMEI.\n",
+        "summary": "Get fuel",
+        "description": "Returns the latest recorded fuel information for a given IMEI.\n",
         "operationId": "getFuel",
         "security": [
           {
-            "basic_auth": []
+            "basicAuth": []
           }
         ],
         "responses": {
@@ -75,38 +74,36 @@
             }
           },
           "401": {
-            "description": "Asset not whitelisted | Unauthorized"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
           }
-        },
-        "x-code-samples": [
-          {
-            "lang": "SHELL",
-            "source": "curl -X GET \\\n  'https://nebula.service.autosense.ch/api/v1/asset/351622073876050/fuel' \\\n  -H 'Authorization: Basic YXZyaW9zOkIzck4hNHZyMTBz'\n  "
-          }
-        ]
+        }
       }
     },
-    "/asset/{asset_id}/fuel/history": {
+    "/asset/{assetId}/fuel/history?fromDate=date1&toDate=date2": {
       "parameters": [
         {
-          "name": "asset_id",
-          "in": "query",
-          "description": "Asset ID of the MDI device, also known as IMEI",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/assetId"
+        },
+        {
+          "$ref": "#/components/parameters/fromDate"
+        },
+        {
+          "$ref": "#/components/parameters/toDate"
         }
       ],
       "get": {
         "tags": [
           "Fuel"
         ],
-        "summary": "Get historical fuel information",
+        "summary": "Get fuel history",
         "description": "Returns the array of all fuel records between two given time period.\n",
         "operationId": "getFuelHistory",
         "security": [
           {
-            "basic_auth": []
+            "basicAuth": []
           }
         ],
         "responses": {
@@ -137,47 +134,247 @@
             }
           },
           "401": {
-            "description": "Asset not whitelisted | Unauthorized"
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
           }
-        },
-        "x-code-samples": [
+        }
+      }
+    },
+    "/asset/{assetId}/mileage": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/assetId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Mileage"
+        ],
+        "summary": "Get mileage",
+        "description": "Returns the latest recorded mileage information for a given IMEI.\n",
+        "operationId": "getMileage",
+        "security": [
           {
-            "lang": "SHELL",
-            "source": "curl -X GET \\\n  'https://nebula.service.autosense.ch/api/v1/asset/351622073876050/fuel/history?fromDate=2019-12-01T05:54:51Z&toDate=2019-12-02T05:54:51Z' \\\n  -H 'Authorization: Basic YXZyaW9zOkIzck4hNHZyMTBz'\n  "
+            "basicAuth": []
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mileage"
+                },
+                "example": {
+                  "messageId": "mdi-1313382935323227381",
+                  "asset": "3516220738006655",
+                  "recordedAt\"": "2019-12-04T05:54:51Z",
+                  "mileage": 12500
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
+          }
+        }
+      }
+    },
+    "/asset/{assetId}/mileage/history?fromDate=date1&toDate=date2": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/assetId"
+        },
+        {
+          "$ref": "#/components/parameters/fromDate"
+        },
+        {
+          "$ref": "#/components/parameters/toDate"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Mileage"
+        ],
+        "summary": "Get mileage history",
+        "description": "Returns an array of mileage messages for a given IMEI within the provided date range.\n",
+        "operationId": "getMileageHistory",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MileageArray"
+                },
+                "example": [
+                  {
+                    "messageId": "mdi-1313382935323227381",
+                    "asset": "3516220738006655",
+                    "recordedAt\"": "2019-12-04T05:54:51Z",
+                    "mileage": 12500
+                  },
+                  {
+                    "messageId": "mdi-1313382935323227382",
+                    "asset": "3516220738006655",
+                    "recordedAt\"": "2019-12-04T05:55:51Z",
+                    "mileage": 12505
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
+          }
+        }
+      }
+    },
+    "/asset/{assetId}/plugUnplug": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/assetId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "PlugUnplug"
+        ],
+        "summary": "Get plugUnplug",
+        "description": "Returns the latest recorded plug/unplug information for a given IMEI. \\\nThe `event` field indicates whether the device is in the **plugged** or **unplugged** state, relative to the car's OBD port.\n",
+        "operationId": "getPlugUnplug",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlugUnplug"
+                },
+                "example": {
+                  "messageId": "mdi-1313382935323227381",
+                  "asset": "3516220738006655",
+                  "recordedAt\"": "2019-12-04T05:54:51Z",
+                  "event": "plugged"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
+          }
+        }
+      }
+    },
+    "/asset/{assetId}/plugUnplug/history?fromDate=date1&toDate=date2": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/assetId"
+        },
+        {
+          "$ref": "#/components/parameters/fromDate"
+        },
+        {
+          "$ref": "#/components/parameters/toDate"
+        }
+      ],
+      "get": {
+        "tags": [
+          "PlugUnplug"
+        ],
+        "summary": "Get plugUnplug history",
+        "description": "Returns an array of plug/unplug messages for a given IMEI within the provided date range.\n",
+        "operationId": "getPlugUnplugHistory",
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlugUnplugArray"
+                },
+                "example": [
+                  {
+                    "messageId": "mdi-1313382935323227381",
+                    "asset": "3516220738006655",
+                    "recordedAt\"": "2019-12-04T05:54:51Z",
+                    "event": "plugged"
+                  },
+                  {
+                    "messageId": "mdi-1313382935323227381",
+                    "asset": "3516220738006655",
+                    "recordedAt\"": "2019-12-04T05:54:51Z",
+                    "event": "unplugged"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/DataNotFound"
+          }
+        }
       }
     }
   },
   "components": {
     "schemas": {
-      "messageId": {
-        "description": "Globally unique ID of the message sent from the in-car device",
-        "type": "string",
-        "length": 23,
-        "example": "mdi-1313382935323211008"
-      },
       "asset": {
         "description": "Asset ID of the in-car MDI device, also know as IMEI",
         "type": "string",
         "length": 15,
         "example": 351620003876050
       },
-      "recordedAt": {
-        "description": "The time when the data was recorded on the in-car MDI device",
-        "type": "string",
-        "length": 20,
-        "example": "2019-12-04T05:54:51Z"
+      "fuelLevel": {
+        "description": "Volume of vehicle's fuel tank in litres",
+        "type": "double",
+        "example": 52
       },
       "fuelLitres": {
         "description": "Litres of fuel available in vehicle",
         "type": "double",
         "example": 12.7
       },
-      "fuelLevel": {
-        "description": "Volume of vehicle's fuel tank in litres",
-        "type": "double",
-        "example": 52
+      "messageId": {
+        "description": "Globally unique ID of the message sent from the in-car device",
+        "type": "string",
+        "length": 23,
+        "example": "mdi-1313382935323211008"
+      },
+      "mileage": {
+        "description": "Mileage of the vehicle in km",
+        "type": "integer",
+        "example": 12500
       },
       "Fuel": {
         "type": "object",
@@ -204,21 +401,138 @@
         "items": {
           "$ref": "#/components/schemas/Fuel"
         }
+      },
+      "Mileage": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "$ref": "#/components/schemas/messageId"
+          },
+          "asset": {
+            "$ref": "#/components/schemas/asset"
+          },
+          "recordedAt": {
+            "$ref": "#/components/schemas/recordedAt"
+          },
+          "mileage": {
+            "$ref": "#/components/schemas/mileage"
+          }
+        }
+      },
+      "MileageArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Mileage"
+        }
+      },
+      "PlugUnplug": {
+        "type": "object",
+        "properties": {
+          "messageId": {
+            "$ref": "#/components/schemas/messageId"
+          },
+          "asset": {
+            "$ref": "#/components/schemas/asset"
+          },
+          "recordedAt": {
+            "$ref": "#/components/schemas/recordedAt"
+          },
+          "event": {
+            "$ref": "#/components/schemas/plugUnplugEvent"
+          }
+        }
+      },
+      "PlugUnplugArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PlugUnplug"
+        }
+      },
+      "plugUnplugEvent": {
+        "type": "string",
+        "description": "If the device is connected or not to the car's OBD port.",
+        "enum": [
+          "plugged",
+          "unplugged"
+        ]
+      },
+      "recordedAt": {
+        "description": "The time when the data was recorded on the in-car MDI device",
+        "type": "string",
+        "length": 20,
+        "example": "2019-12-04T05:54:51Z"
       }
     },
-    "headers": {
-      "ExpiresAfter": {
-        "description": "date in UTC when token expires",
+    "responses": {
+      "DataNotFound": {
+        "description": "Data for IMEI not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "timestamp": {
+                  "type": "ISO string",
+                  "description": "Time when the request was processed",
+                  "example": "2019-12-05T15:17:18.542+0000"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Error message explanation",
+                  "example": "No message available"
+                },
+                "details": {
+                  "type": "string",
+                  "description": "The requested URI path",
+                  "example": "uri=/api/v1/asset/YOUR_IMEI/..."
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Asset not whitelisted | Unauthorized"
+      }
+    },
+    "parameters": {
+      "assetId": {
+        "name": "assetId",
+        "in": "path",
+        "description": "Asset ID of the MDI device, also known as IMEI",
+        "required": true,
         "schema": {
           "type": "string",
-          "format": "date-time"
+          "maxLength": 15,
+          "minLength": 15
+        }
+      },
+      "fromDate": {
+        "name": "fromDate",
+        "in": "query",
+        "description": "Start date of the query range in ISO format. Must be within 48 hours of `toDate`.",
+        "example": "2019-11-15T08:00:00Z",
+        "required": true,
+        "schema": {
+          "type": "ISO string"
+        }
+      },
+      "toDate": {
+        "name": "toDate",
+        "in": "query",
+        "description": "End date of the query range in ISO format. Must be within 48 hours of `fromDate`.\n",
+        "example": "2019-11-16T08:00:00Z",
+        "required": true,
+        "schema": {
+          "type": "ISO string"
         }
       }
     },
     "securitySchemes": {
-      "basic_auth": {
+      "basicAuth": {
         "type": "http",
-        "scheme": "basic"
+        "scheme": "basic",
+        "description": "Once you have a username and password from autoSense to access our Business API, generate a **basic authentication token** \nand include this in the Authorization header of your requests: `Authorization: Basic <auth_token>`\n"
       }
     }
   }
