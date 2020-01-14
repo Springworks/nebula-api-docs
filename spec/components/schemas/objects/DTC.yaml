@@ -1,0 +1,10 @@
+type: object
+properties:
+  messageId:
+    $ref: "#/components/schemas/messageId"
+  asset:
+    $ref: "#/components/schemas/asset"
+  recordedAt:
+    $ref: "#/components/schemas/recordedAt"
+  rawData:
+    $ref: "#/components/schemas/rawData"

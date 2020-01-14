@@ -27,10 +27,31 @@ tags:
   - name: Fuel
     description: Get current and historical fuel information for an IMEI.
   - name: Mileage
-    description: Get current and historical mileage information for an IMEI.
+    description: Get current and historical mileage information for an IMEI. \
+      You will find two values here, the mileage reported by the vehicle (`Mileage`) and mileage calculated by the autoSense device (`GPS Mileage`)
   - name: PlugUnplug
     description: |
       Retrieve actual or historical information whether the MDI device is connected to the car's OBD port. \ 
       A new record is created each time the status of the devices changes from `plugged` or `unplugged`.
+  - name: Error Codes
+    description: |
+      Error codes reported by the vehicle and malfunction indicator light status (MIL).
 servers:
   - url: 'https://nebula.service.autosense.ch/api/v1'
+
+x-tagGroups:
+  - name: Fuel
+    tags:
+      - Fuel
+  - name: Mileage
+    tags:
+      - Mileage
+      - GPS Mileage
+      - Combined Mileage
+  - name: Plug Unplug
+    tags:
+      - PlugUnplug
+  - name: Error Codes
+    tags:
+      - DTC
+      - MIL

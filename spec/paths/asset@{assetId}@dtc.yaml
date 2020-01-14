@@ -3,12 +3,11 @@ parameters:
 
 get:
   tags:
-    - Mileage
-  summary: Get mileage
+    - DTC
+  summary: Get DTC codes
   description: |
-    Returns the latest recorded mileage information for a given IMEI.
-    This endpoint refers to the mileage reported by the vehicle.
-  operationId: getMileage
+    Returns the latest recorded Diagnostics Trouble Codes (DTC) from the vehicle's onboard diagnostics system in a stringified JSON format.
+  operationId: getDtc
   security:
     - basicAuth: []
   responses:
@@ -17,12 +16,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Mileage"
+            $ref: "#/components/schemas/DTC"
           example:
             messageId: mdi-1313382935323227381
             asset: "3516220738006655"
             recordedAt": "2019-12-04T05:54:51Z"
-            mileage: 12500
+            rawData: "[{\"mode\":3,\"ecu\":\"7E8\",\"dtc\":\"U11F5\"}]"
     "401":
       $ref: "#/components/responses/Unauthorized"
     "404":

@@ -1,0 +1,32 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+
+get:
+  tags:
+    - MIL
+  summary: Get MIL codes history
+  description: |
+    Returns an array of the recorded Malfunction Indicator Light (MIL) codes from the vehicle's onboard diagnostics system in a stringified JSON format.
+  operationId: getMilHistory
+  security:
+    - basicAuth: []
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/DTCArray"
+          example:
+            - messageId: mdi-1313382935323227381
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:54:51Z"
+              <??????>: "[{\"mode\":7,\"ecu\":\"7E8\",\"dtc\":\"U11F5\"}]"
+            - messageId: mdi-1313382935323227352
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T06:54:51Z"
+              <??????>: "[{\"mode\":7,\"ecu\":\"7E8\",\"dtc\":\"U11F5\"}]"
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"

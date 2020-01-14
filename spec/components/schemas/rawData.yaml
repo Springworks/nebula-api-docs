@@ -1,0 +1,3 @@
+type: string
+description: Raw DTC code information in stringified JSON format.
+example: [{\"mode\":3,\"ecu\":\"7E8\",\"dtc\":\"U11F5\"}]

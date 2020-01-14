@@ -1,0 +1,35 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+
+get:
+  tags:
+    - Combined Mileage
+  summary: Get combined mileage
+  description: |
+    Returns the latest recorded mileage information for a given IMEI.
+    This endpoint provides both the mileage reported by the vehicle and the mileage calculated by the onboard autoSense device GPS.
+  operationId: getCombinedMileage
+  security:
+    - basicAuth: []
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CombinedMileage"
+          example:
+            GPSMileage:
+              messageId: mdi-1313382935323227381
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:54:51Z"
+              mileage: 12500
+            mileage:
+              messageId: mdi-1313382935323227381
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:54:51Z"
+              mileage: 12500
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"
