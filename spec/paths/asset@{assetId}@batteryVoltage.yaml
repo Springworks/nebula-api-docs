@@ -3,12 +3,11 @@ parameters:
 
 get:
   tags:
-    - GPS Mileage
-  summary: Get GPS mileage
+    - Battery Voltage
+  summary: Get Battery Voltage
   description: |
-    Returns the latest recorded GPS mileage information for a given IMEI.
-    This endpoint refers to the mileage calculated by the device's GPS.
-  operationId: getGPSMileage
+    Returns the latest recorded basttery voltage of the vehicle.
+  operationId: getBatteryVoltage
   security:
     - basicAuth: []
   responses:
@@ -17,12 +16,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Mileage"
+            $ref: "#/components/schemas/BatteryVoltage"
           example:
             messageId: mdi-1313382935323227381
             asset: "3516220738006655"
             recordedAt": "2019-12-04T05:54:51Z"
-            mileage: 11560
+            voltage: 12.09
     "401":
       $ref: "#/components/responses/Unauthorized"
     "404":

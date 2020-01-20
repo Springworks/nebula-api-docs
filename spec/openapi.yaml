@@ -55,3 +55,6 @@ x-tagGroups:
     tags:
       - DTC
       - MIL
+  - name: Battery Voltage
+    tags:
+      - Battery Voltage

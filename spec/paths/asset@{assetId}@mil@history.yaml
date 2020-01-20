@@ -1,5 +1,7 @@
 parameters:
   - $ref: "#/components/parameters/assetId"
+  - $ref: "#/components/parameters/fromDate"
+  - $ref: "#/components/parameters/toDate"
 
 get:
   tags:
