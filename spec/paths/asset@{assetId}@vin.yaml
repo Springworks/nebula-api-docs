@@ -1,0 +1,29 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+
+get:
+  tags:
+    - VIN
+  summary: Get VIN
+  description: |
+    Returns the latest recorded Vehicle Identification Number (VIN) for a given IMEI.
+  operationId: getVin
+  security:
+    - basicAuth: []
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vin"
+          example:
+            messageId: mdi-1313382935323227381
+            asset: "3516220738006655"
+            recordedAt": "2019-12-04T05:54:51Z"
+            vin: WP0ZZZ99ZTS392124
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"
+

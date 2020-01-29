@@ -40,6 +40,12 @@ servers:
   - url: 'https://nebula.service.autosense.ch/api/v1'
 
 x-tagGroups:
+  - name: VIN
+    tags: 
+      - VIN
+  - name: Plug Unplug
+    tags:
+      - PlugUnplug
   - name: Fuel
     tags:
       - Fuel
@@ -48,9 +54,6 @@ x-tagGroups:
       - Mileage
       - GPS Mileage
       - Combined Mileage
-  - name: Plug Unplug
-    tags:
-      - PlugUnplug
   - name: Error Codes
     tags:
       - DTC

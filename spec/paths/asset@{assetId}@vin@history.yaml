@@ -1,0 +1,34 @@
+parameters:
+  - $ref: "#/components/parameters/assetId"
+  - $ref: "#/components/parameters/fromDate"
+  - $ref: "#/components/parameters/toDate"
+
+get:
+  tags:
+    - VIN
+  summary: Get VIN history
+  description: |
+    Returns an array of Vehicle Identification Number (VIN) for a given IMEI within the provided date range.
+  operationId: getVINHistory
+  security:
+    - basicAuth: []
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VinArray"
+          example:
+            - messageId: mdi-1313382935323227381
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:54:51Z"
+              vin: WP0ZZZ99ZTS392124
+            - messageId: mdi-1313382935323227382
+              asset: "3516220738006655"
+              recordedAt": "2019-12-04T05:55:51Z"
+              vin: WP0ZZZ99ZTS392124
+    "401":
+      $ref: "#/components/responses/Unauthorized"
+    "404":
+      $ref: "#/components/responses/DataNotFound"
