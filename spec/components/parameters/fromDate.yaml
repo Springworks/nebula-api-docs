@@ -4,4 +4,4 @@ description: Start date of the query range in ISO format. Must be within 48 hour
 example: "2019-11-15T08:00:00Z"
 required: true
 schema:
-  type: ISO string
+  type: ISO string (UTC time)

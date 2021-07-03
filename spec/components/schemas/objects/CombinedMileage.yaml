@@ -1,0 +1,6 @@
+type: object
+properties:
+  GPSMileage: 
+    $ref: "#/components/schemas/Mileage"
+  mileage:
+    $ref: "#/components/schemas/Mileage"

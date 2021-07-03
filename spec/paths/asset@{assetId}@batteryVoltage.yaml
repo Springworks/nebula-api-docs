@@ -3,12 +3,11 @@ parameters:
 
 get:
   tags:
-    - Mileage
-  summary: Get mileage
+    - Battery Voltage
+  summary: Get Battery Voltage
   description: |
-    Returns the latest recorded mileage information for a given IMEI.
-    This endpoint refers to the mileage reported by the vehicle.
-  operationId: getMileage
+    Returns the latest recorded basttery voltage of the vehicle.
+  operationId: getBatteryVoltage
   security:
     - basicAuth: []
   responses:
@@ -17,12 +16,12 @@ get:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Mileage"
+            $ref: "#/components/schemas/BatteryVoltage"
           example:
             messageId: mdi-1313382935323227381
             asset: "3516220738006655"
             recordedAt": "2019-12-04T05:54:51Z"
-            mileage: 12500
+            voltage: 12.09
     "401":
       $ref: "#/components/responses/Unauthorized"
     "404":

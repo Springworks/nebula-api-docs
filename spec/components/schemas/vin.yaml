@@ -1,0 +1,3 @@
+description: Vehicle Identification Number (VIN) of the car
+type: string
+example: WP0ZZZ99ZTS392124
